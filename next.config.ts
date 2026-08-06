@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   output: "export",
   basePath,
   trailingSlash: true,
+  // next/image (unoptimized) public görsel src'sine basePath eklemediği için
+  // asset() yardımcısıyla elle prefixliyoruz — bu değeri client'a da açıyoruz.
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   images: {
     unoptimized: true,
   },

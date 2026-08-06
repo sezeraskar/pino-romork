@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { nav } from "@/lib/content";
+import { asset } from "@/lib/asset";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,7 +21,7 @@ export default function Header() {
       <div className="wrap nav">
         <Link href="/" className="brand" aria-label="Pino Römork ana sayfa">
           <Image
-            src="/images/logo.png"
+            src={asset("/images/logo.png")}
             alt="Pino Römork"
             width={286}
             height={107}

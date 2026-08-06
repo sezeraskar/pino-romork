@@ -1,5 +1,7 @@
 // Pino Römork — site içeriği (kaynak: pinoromork.com + pino/KAPSAM.md envanteri)
 // Görseller public/images/ altında yerel olarak servis edilir.
+import { asset } from "./asset";
+
 
 export const site = {
   name: "Pino Römork",
@@ -13,8 +15,8 @@ export const site = {
   whatsappBase: "https://api.whatsapp.com/send?phone=905412577792&text=",
   whatsapp:
     "https://api.whatsapp.com/send?phone=905412577792&text=Merhaba,%20römork%20hakkında%20bilgi%20almak%20istiyorum.",
-  hero: "/images/hero.jpg",
-  craftImage: "/images/uretim.jpg",
+  hero: asset("/images/hero.jpg"),
+  craftImage: asset("/images/uretim.jpg"),
 };
 
 /** Ürün hakkında WhatsApp mesajı üretir. */
@@ -67,7 +69,7 @@ export const categories: Category[] = [
     title: "Hafif Yük Römorkları",
     fullTitle: "Hafif Yük Römorkleri",
     count: "8 model",
-    image: "/images/cat/photo-hafif-yuk-romorkleri.jpg",
+    image: asset("/images/cat/photo-hafif-yuk-romorkleri.jpg"),
     alt: "Pino hafif yük römorku — günlük taşıma için ekonomik çözüm",
     tagline: "Ekonomik, dayanıklı ve kullanımı kolay.",
     intro:
@@ -106,7 +108,7 @@ export const categories: Category[] = [
     title: "Araç Taşıma",
     fullTitle: "Araç Taşıma Römorkleri",
     count: "5 model",
-    image: "/images/cat/photo-arac-tasima-romorkleri.jpg",
+    image: asset("/images/cat/photo-arac-tasima-romorkleri.jpg"),
     alt: "Pino araç taşıma römorku — ATV, motosiklet ve otomobil taşıma",
     tagline: "Güvenli ve etkili araç taşıma.",
     intro:
@@ -137,7 +139,7 @@ export const categories: Category[] = [
     title: "Bot & Tekne Taşıma",
     fullTitle: "Bot ve Tekne Taşıma Römorkleri",
     count: "3 model",
-    image: "/images/cat/photo-bot-ve-tekne-tasima-romorkleri.jpg",
+    image: asset("/images/cat/photo-bot-ve-tekne-tasima-romorkleri.jpg"),
     alt: "Pino tekne ve jet ski taşıma römorku",
     tagline: "Su sporları için özel tasarım.",
     intro:
@@ -166,7 +168,7 @@ export const categories: Category[] = [
     title: "Canlı Hayvan Taşıma",
     fullTitle: "Canlı Hayvan Taşıma Römorkleri",
     count: "3 model",
-    image: "/images/cat/photo-canli-hayvan-tasima-romorkleri.jpg",
+    image: asset("/images/cat/photo-canli-hayvan-tasima-romorkleri.jpg"),
     alt: "Pino canlı hayvan taşıma römorku — at ve köpek taşıma",
     tagline: "Konfor ve güvenlik önceliğiyle.",
     intro:
@@ -195,7 +197,7 @@ export const categories: Category[] = [
     title: "Sektörel Ticari Satış",
     fullTitle: "Sektörel Ticari Satış Römorkleri",
     count: "8 model",
-    image: "/images/cat/photo-sektorel-ticari-satis-romorkleri.jpg",
+    image: asset("/images/cat/photo-sektorel-ticari-satis-romorkleri.jpg"),
     alt: "Pino sektörel ticari satış römorku — mobil mutfak ve satış",
     tagline: "Taşınabilir ve işlevsel işletme.",
     intro:
@@ -229,7 +231,7 @@ export const categories: Category[] = [
     title: "Ağır Yük Taşıma",
     fullTitle: "Ağır Yük Taşıma Römorkleri",
     count: "4 model",
-    image: "/images/cat/photo-agir-yuk-tasima-romorkleri.jpg",
+    image: asset("/images/cat/photo-agir-yuk-tasima-romorkleri.jpg"),
     alt: "Pino ağır yük taşıma römorku — makine ve jeneratör taşıma",
     tagline: "Endüstriyel tonaj için güç.",
     intro:
@@ -394,7 +396,7 @@ export const featured = {
   eyebrow: "Çift Aks · Frenli",
   title: "Çift Aks Ağır Yük Römorku",
   href: "/urunler/agir-yuk-tasima-romorkleri",
-  image: "/images/agir-yuk-tasima-romorkleri.jpg",
+  image: asset("/images/agir-yuk-tasima-romorkleri.jpg"),
   lead: "Makine, jeneratör ve endüstriyel yükler için vinç sistemi, rampa ve sabitleme aparatlarıyla donatılmış ağır tonaj çözümü.",
   specs: [
     ["Azami yüklü ağırlık", "3.500 kg"],
@@ -495,7 +497,7 @@ export const blogPosts: BlogPost[] = [
     dateLabel: "20 Temmuz 2026",
     readingTime: "5 dk okuma",
     category: "Rehber",
-    image: "/images/hafif-yuk-romorkleri.jpg",
+    image: asset("/images/hafif-yuk-romorkleri.jpg"),
     body: [
       { type: "p", text: "Römork, bir kez alınıp uzun yıllar kullanılan bir yatırımdır. Yanlış seçim; hem güvenlik riski hem de kullanışsız bir üründe kalan para demektir. Doğru römorku seçmek için önce ihtiyacınızı, sonra aracınızı ve yasal çerçeveyi netleştirmeniz gerekir. İşte satın almadan önce dikkat edilmesi gereken başlıklar." },
       { type: "h2", text: "1. Taşıyacağınız yükü netleştirin" },
@@ -528,7 +530,7 @@ export const blogPosts: BlogPost[] = [
     dateLabel: "10 Temmuz 2026",
     readingTime: "4 dk okuma",
     category: "Bilgi",
-    image: "/images/agir-yuk-tasima-romorkleri.jpg",
+    image: asset("/images/agir-yuk-tasima-romorkleri.jpg"),
     body: [
       { type: "p", text: "\"Römork ne kadar?\" sorusunun tek bir cevabı yoktur; çünkü römork fiyatı, aynı bir araç fiyatı gibi, konfigürasyona göre değişir. Aynı kategoride iki römork arasında ciddi fiyat farkı olabilir. Bu farkı yaratan kalemleri bilmek, bütçenizi doğru planlamanıza yardımcı olur." },
       { type: "h2", text: "Boyut ve taşıma kapasitesi" },
@@ -557,7 +559,7 @@ export const blogPosts: BlogPost[] = [
     dateLabel: "28 Haziran 2026",
     readingTime: "4 dk okuma",
     category: "İş Fikri",
-    image: "/images/sektorel-ticari-satis-romorkleri.jpg",
+    image: asset("/images/sektorel-ticari-satis-romorkleri.jpg"),
     body: [
       { type: "p", text: "Yemek işine girmek isteyen çoğu girişimcinin önündeki en büyük engel, sabit bir mekânın kira ve tadilat maliyetidir. Mobil mutfak römorku, bu maliyeti ortadan kaldırıp işinizi doğrudan müşterinin ayağına götürmenizi sağlar. Festivaller, pazarlar, iş merkezleri ve etkinlikler; işletmenizin yeni adresi olabilir." },
       { type: "h2", text: "Neden mobil mutfak?" },
@@ -588,7 +590,7 @@ export const services = [
     desc: "Avrupa E-belgeli (EC 94/20) çeki demiri satışı, montaj ve tescil süreci.",
     href: "/ceki-demiri",
     external: false,
-    image: "/images/hizmet/ceki-demiri.jpg",
+    image: asset("/images/hizmet/ceki-demiri.jpg"),
   },
   {
     n: "02",
@@ -596,7 +598,7 @@ export const services = [
     desc: "Özgürlüğü yola taşıyan, ergonomik iç mekânlı Pino karavanlar.",
     href: "https://pinokaravan.com/tr?lang=tr",
     external: true,
-    image: "/images/hizmet/karavan.jpg",
+    image: asset("/images/hizmet/karavan.jpg"),
   },
   {
     n: "03",
@@ -604,7 +606,7 @@ export const services = [
     desc: "Talebiniz doğrultusunda, kişiye özel araç ve römork mühendisliği.",
     href: "/proje-gelistirme",
     external: false,
-    image: "/images/hizmet/arac-projelendirme.jpg",
+    image: asset("/images/hizmet/arac-projelendirme.jpg"),
   },
   {
     n: "04",
@@ -612,6 +614,6 @@ export const services = [
     desc: "Bakım-onarım servisi; kiralık mobil mutfak ve mobil ofis çözümleri.",
     href: "https://www.karavanservisim.com/",
     external: true,
-    image: "/images/hizmet/servis-kiralama.jpg",
+    image: asset("/images/hizmet/servis-kiralama.jpg"),
   },
 ];

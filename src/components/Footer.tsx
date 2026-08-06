@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { categories, site } from "@/lib/content";
+import { asset } from "@/lib/asset";
 
 const corporate = [
   { label: "Hakkımızda", href: "/hakkimizda" },
@@ -22,7 +23,7 @@ export default function Footer() {
           <div className="foot-brand">
             <Link href="/" className="foot-logo" aria-label="Pino Römork ana sayfa">
               <Image
-                src="/images/logo.png"
+                src={asset("/images/logo.png")}
                 alt="Pino Römork"
                 width={286}
                 height={107}
