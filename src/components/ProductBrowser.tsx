@@ -94,7 +94,7 @@ export default function ProductBrowser() {
           {items.map((p) => (
             <Link
               key={p.slug}
-              href={`/urunler/${p.slug}`}
+              href={`/${p.categorySlug}/${p.slug}`}
               className="product-card"
               aria-label={p.name}
             >

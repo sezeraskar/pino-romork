@@ -4,57 +4,82 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "@/components/Reveal";
 import { ArrowRight, ArrowUpRight } from "@/components/icons";
-import {
-  allProductParams,
-  getCategory,
-  getProduct,
-  productItems,
-  site,
-  waFor,
-} from "@/lib/content";
+import { categories, getModel, modelSlug, site, waFor } from "@/lib/content";
+
+const SITE_URL = "https://pinoromork.com";
 
 export function generateStaticParams() {
-  return allProductParams();
+  return categories.flatMap((c) =>
+    c.models.map((m) => ({ kategori: c.slug, model: modelSlug(m.name) })),
+  );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ model: string }>;
+  params: Promise<{ kategori: string; model: string }>;
 }): Promise<Metadata> {
-  const { model } = await params;
-  const p = getProduct(model);
-  if (!p) return { title: "Ürün bulunamadı" };
+  const { kategori, model } = await params;
+  const found = getModel(kategori, model);
+  if (!found) return { title: "Ürün bulunamadı" };
+  const { category, model: m } = found;
   return {
-    title: `${p.name} — ${p.categoryFullTitle}`,
-    description: `${p.name}: ${p.desc} ${p.categoryFullTitle} kategorisinde, siparişe özel üretim.`,
-    alternates: { canonical: `/urunler/${p.slug}` },
+    title: `${m.name} — ${category.fullTitle}`,
+    description: `${m.name}: ${m.desc} ${category.fullTitle} kategorisinde siparişe özel üretim, uygun römork fiyatları ve Pino Römork güvencesi.`,
+    keywords: [m.name, category.fullTitle, "römork", "römork fiyatları", "Pino Römork"],
+    alternates: { canonical: `/${category.slug}/${model}` },
     openGraph: {
-      title: `${p.name} | Pino Römork`,
-      description: p.desc,
-      images: [{ url: p.image, width: 800, height: 1000, alt: p.name }],
+      type: "website",
+      locale: "tr_TR",
+      url: `${SITE_URL}/${category.slug}/${model}`,
+      title: `${m.name} | Pino Römork`,
+      description: m.desc,
+      images: [{ url: category.image, width: 800, height: 1000, alt: m.name }],
     },
   };
 }
 
-export default async function ProductDetailPage({
+export default async function ModelPage({
   params,
 }: {
-  params: Promise<{ model: string }>;
+  params: Promise<{ kategori: string; model: string }>;
 }) {
-  const { model } = await params;
-  const p = getProduct(model);
-  if (!p) notFound();
-  const cat = getCategory(p.categorySlug)!;
+  const { kategori, model } = await params;
+  const found = getModel(kategori, model);
+  if (!found) notFound();
+  const { category: cat, model: m, index } = found;
 
   const telPrimary = `tel:${site.phonePrimary.replace(/\s/g, "")}`;
-  const related = productItems
-    .filter((x) => x.categorySlug === p.categorySlug && x.slug !== p.slug)
-    .slice(0, 3);
-  const subject = `${p.categoryFullTitle} — ${p.name}`;
+  const related = cat.models.filter((x) => x.name !== m.name).slice(0, 3);
+  const subject = `${cat.fullTitle} — ${m.name}`;
+
+  const productLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: m.name,
+    description: m.desc,
+    image: `${SITE_URL}${cat.image}`,
+    category: cat.fullTitle,
+    brand: { "@type": "Brand", name: "Pino Römork" },
+    manufacturer: { "@type": "Organization", name: "Pino Römork" },
+    url: `${SITE_URL}/${cat.slug}/${model}`,
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Ürünler", item: `${SITE_URL}/urunler` },
+      { "@type": "ListItem", position: 3, name: cat.fullTitle, item: `${SITE_URL}/${cat.slug}` },
+      { "@type": "ListItem", position: 4, name: m.name, item: `${SITE_URL}/${cat.slug}/${model}` },
+    ],
+  };
 
   return (
     <main className="subpage">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+
       {/* HERO */}
       <section className="cat-hero">
         <div className="wrap cat-hero-grid">
@@ -64,18 +89,18 @@ export default async function ProductDetailPage({
               <span>/</span>
               <Link href="/urunler">Ürünler</Link>
               <span>/</span>
-              <Link href={`/urunler?kategori=${cat.slug}`}>{cat.title}</Link>
+              <Link href={`/${cat.slug}`}>{cat.title}</Link>
               <span>/</span>
-              <span aria-current="page">{p.name}</span>
+              <span aria-current="page">{m.name}</span>
             </Reveal>
             <Reveal as="span" className="eyebrow">
-              {p.categoryFullTitle}
+              {cat.fullTitle} · M{String(index + 1).padStart(2, "0")}
             </Reveal>
             <Reveal as="h1" className="page-title">
-              {p.name}
+              {m.name}
             </Reveal>
             <Reveal as="p" className="page-lead">
-              {p.desc}
+              {m.desc}
             </Reveal>
             <Reveal as="p" className="page-lead" style={{ marginTop: 14 }}>
               {cat.intro}
@@ -92,8 +117,8 @@ export default async function ProductDetailPage({
           </div>
           <Reveal className="cat-hero-media">
             <Image
-              src={p.image}
-              alt={`${p.name} — ${p.categoryFullTitle}`}
+              src={cat.image}
+              alt={`${m.name} — ${cat.fullTitle}`}
               fill
               priority
               sizes="(max-width:1024px) 100vw, 45vw"
@@ -138,7 +163,7 @@ export default async function ProductDetailPage({
               </Reveal>
               <Reveal as="p" className="craft-lead">
                 Aşağıdaki değerler {cat.fullTitle.toLowerCase()} için temsili
-                aralıklardır. {p.name} modelinin kesin ölçü, dara, aks ve
+                aralıklardır. {m.name} modelinin kesin ölçü, dara, aks ve
                 donanımı; yükünüze göre projelendirme aşamasında netleştirilir.
               </Reveal>
               <Reveal>
@@ -172,33 +197,25 @@ export default async function ProductDetailPage({
                 Aynı kategorideki diğer modeller.
               </Reveal>
             </div>
-            <div className="product-grid">
+            <div className="model-grid">
               {related.map((rm, i) => (
-                <Link
-                  key={rm.slug}
-                  href={`/urunler/${rm.slug}`}
-                  className="product-card"
+                <Reveal
+                  as="a"
+                  className="model-card"
+                  key={rm.name}
+                  delay={i * 40}
+                  href={`/${cat.slug}/${modelSlug(rm.name)}`}
                   aria-label={rm.name}
                 >
-                  <div className="product-thumb">
-                    <Image
-                      src={rm.image}
-                      alt={rm.name}
-                      fill
-                      sizes="(max-width:760px) 50vw, 33vw"
-                      style={{ objectFit: "cover" }}
-                    />
-                    <span className="product-cat">{rm.categoryTitle}</span>
-                  </div>
-                  <div className="product-info">
+                  <div className="model-card-top">
                     <h3>{rm.name}</h3>
                     <p>{rm.desc}</p>
-                    <span className="product-link">
-                      İncele
-                      <ArrowUpRight />
-                    </span>
                   </div>
-                </Link>
+                  <span className="model-cta">
+                    İncele
+                    <ArrowUpRight />
+                  </span>
+                </Reveal>
               ))}
             </div>
           </div>

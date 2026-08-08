@@ -37,7 +37,7 @@ export default function Footer() {
           <nav className="fcol" aria-label="Ürünler menüsü">
             <h5>Ürünler</h5>
             {categories.slice(0, 4).map((c) => (
-              <Link href={`/urunler?kategori=${c.slug}`} key={c.slug}>
+              <Link href={`/${c.slug}`} key={c.slug}>
                 {c.title}
               </Link>
             ))}

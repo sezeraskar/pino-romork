@@ -301,13 +301,13 @@ export function allModelParams(): { slug: string; model: string }[] {
   );
 }
 
-// Ana sayfa kategori kartları (kategorilerden türetilir) — listeleme sayfasına filtreli gider
+// Ana sayfa kategori kartları — SEO için eski yapıdaki kategori URL'lerine (/[kategori]) gider
 export const products = categories.map((c) => ({
   title: c.title,
   count: c.count,
   image: c.image,
   alt: c.alt,
-  href: `/urunler?kategori=${c.slug}`,
+  href: `/${c.slug}`,
 }));
 
 // Düz ürün listesi (e-ticaret mantığı: tek listeleme + detay)
@@ -362,7 +362,7 @@ export const featuredModels = categories.map((c) => {
     desc: m.desc,
     image: c.image,
     alt: c.alt,
-    href: `/urunler/${modelSlug(m.name)}`,
+    href: `/${c.slug}/${modelSlug(m.name)}`,
     specs: c.sampleSpecs.slice(0, 2) as [string, string][],
   };
 });
