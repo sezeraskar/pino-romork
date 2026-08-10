@@ -344,7 +344,7 @@ export function allProductParams(): { model: string }[] {
 }
 
 // Ana sayfada öne çıkan modeller — her kategoriden bir bayrak model
-const FEATURED_PICKS: Record<string, string> = {
+export const FEATURED_PICKS: Record<string, string> = {
   "hafif-yuk-romorkleri": "Kompozit Kabin Römork",
   "arac-tasima-romorkleri": "Araba Taşıma Römorku",
   "bot-ve-tekne-tasima-romorkleri": "Tekne Taşıma Römorku",

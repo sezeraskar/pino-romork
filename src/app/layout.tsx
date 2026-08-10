@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppFloat from "@/components/WhatsAppFloat";
-import BottomNav from "@/components/BottomNav";
+import { getSite } from "@/lib/data";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -65,33 +62,35 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-const orgLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Pino Römork",
-  alternateName: "Pino Karavan",
-  url: SITE_URL,
-  logo: `${SITE_URL}/images/logo.png`,
-  description:
-    "2009'dan bu yana yerli üretim römork ve karavan imalatı. Hafif yük, araç taşıma, bot & tekne, canlı hayvan, ağır yük römorkları ve çeki demiri.",
-  foundingDate: "2009",
-  telephone: "+902166062003",
-  email: "info@pinoromork.com",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "Elmalı Mah. Keser Cad. Mürver Çıkmazı No:60/A",
-    addressLocality: "Beykoz",
-    addressRegion: "İstanbul",
-    addressCountry: "TR",
-  },
-  sameAs: [
-    "https://www.facebook.com/people/Pino-R%C3%B6mork-%C3%87eki-Demiri/100010391267818/",
-    "https://www.instagram.com/pinoromork/",
-    "https://www.youtube.com/channel/UCl5rlQ3zKvds5pj0IlsOizA",
-  ],
-};
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const site = await getSite();
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: site.name,
+    alternateName: "Pino Karavan",
+    url: SITE_URL,
+    logo: `${SITE_URL}/images/logo.png`,
+    description:
+      "2009'dan bu yana yerli üretim römork ve karavan imalatı. Hafif yük, araç taşıma, bot & tekne, canlı hayvan, ağır yük römorkları ve çeki demiri.",
+    foundingDate: site.founded,
+    telephone: site.phonePrimary.replace(/\s/g, ""),
+    email: site.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: site.address,
+      addressLocality: "Beykoz",
+      addressRegion: "İstanbul",
+      addressCountry: "TR",
+    },
+    sameAs: [
+      "https://www.facebook.com/people/Pino-R%C3%B6mork-%C3%87eki-Demiri/100010391267818/",
+      "https://www.instagram.com/pinoromork/",
+      "https://www.youtube.com/channel/UCl5rlQ3zKvds5pj0IlsOizA",
+    ],
+  };
+
   return (
     <html lang="tr" className={`${fraunces.variable} ${inter.variable}`}>
       <body>
@@ -99,11 +98,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
         />
-        <Header />
         {children}
-        <Footer />
-        <WhatsAppFloat />
-        <BottomNav />
       </body>
     </html>
   );

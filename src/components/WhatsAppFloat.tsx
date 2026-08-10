@@ -1,10 +1,9 @@
-import { site } from "@/lib/content";
 import { WhatsAppIcon } from "./icons";
 
-export default function WhatsAppFloat() {
+export default function WhatsAppFloat({ whatsapp }: { whatsapp: string }) {
   return (
     <a
-      href={site.whatsapp}
+      href={whatsapp}
       className="wa-float"
       target="_blank"
       rel="noopener noreferrer"

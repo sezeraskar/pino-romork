@@ -1,21 +1,26 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { categories, site } from "@/lib/content";
 import { ArrowRight } from "./icons";
 
 const WA_PHONE = "905412577792";
 
 type Status = "idle" | "sending" | "ok" | "error";
 
-export default function ContactForm() {
+export default function ContactForm({
+  topics,
+  phone = "+90 216 606 20 03",
+}: {
+  topics: string[];
+  phone?: string;
+}) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({
     ad: "",
     telefon: "",
     eposta: "",
-    konu: categories[0]?.fullTitle ?? "Genel",
+    konu: topics[0] ?? "Genel",
     mesaj: "",
     website: "", // honeypot
   });
@@ -73,9 +78,7 @@ export default function ContactForm() {
         <h3>Talebiniz alındı</h3>
         <p>
           En kısa sürede size dönüş yapacağız. Acele bir durum varsa{" "}
-          <a href={`tel:${site.phonePrimary.replace(/\s/g, "")}`}>
-            {site.phonePrimary}
-          </a>{" "}
+          <a href={`tel:${phone.replace(/\s/g, "")}`}>{phone}</a>{" "}
           numaramızdan da ulaşabilirsiniz.
         </p>
       </div>
@@ -120,15 +123,11 @@ export default function ContactForm() {
         <label className="field">
           <span>İlgilendiğiniz ürün</span>
           <select value={form.konu} onChange={set("konu")}>
-            {categories.map((c) => (
-              <option key={c.slug} value={c.fullTitle}>
-                {c.fullTitle}
+            {topics.map((t) => (
+              <option key={t} value={t}>
+                {t}
               </option>
             ))}
-            <option value="Çeki Demiri">Çeki Demiri</option>
-            <option value="Karavan">Karavan</option>
-            <option value="Proje Geliştirme">Proje Geliştirme</option>
-            <option value="Genel / Diğer">Genel / Diğer</option>
           </select>
         </label>
       </div>

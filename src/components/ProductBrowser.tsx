@@ -5,9 +5,17 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { ArrowUpRight } from "./icons";
-import { categories, productItems } from "@/lib/content";
+import type { ProductItem } from "@/lib/content";
 
-export default function ProductBrowser() {
+type Cat = { slug: string; title: string; modelCount: number };
+
+export default function ProductBrowser({
+  categories,
+  productItems,
+}: {
+  categories: Cat[];
+  productItems: ProductItem[];
+}) {
   const router = useRouter();
   const params = useSearchParams();
   const initial = params.get("kategori") ?? "all";
@@ -30,7 +38,7 @@ export default function ProductBrowser() {
   const activeTitle =
     active === "all"
       ? null
-      : categories.find((c) => c.slug === active)?.fullTitle;
+      : categories.find((c) => c.slug === active)?.title;
 
   return (
     <div className="browse-layout">
@@ -56,7 +64,7 @@ export default function ProductBrowser() {
                 aria-current={active === c.slug ? "true" : undefined}
               >
                 <span>{c.title}</span>
-                <span className="browse-item-count">{c.models.length}</span>
+                <span className="browse-item-count">{c.modelCount}</span>
               </button>
             </li>
           ))}
@@ -79,7 +87,7 @@ export default function ProductBrowser() {
             <option value="all">Tümü ({productItems.length})</option>
             {categories.map((c) => (
               <option key={c.slug} value={c.slug}>
-                {c.title} ({c.models.length})
+                {c.title} ({c.modelCount})
               </option>
             ))}
           </select>

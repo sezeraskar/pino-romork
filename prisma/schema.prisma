@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ SİTE AYARLARI (tek satır, id=1) ============
+model SiteSetting {
+  id             Int      @id @default(1)
+  name           String
+  tagline        String
+  founded        String
+  phonePrimary   String
+  phoneSecondary String
+  email          String
+  address        String
+  whatsappPhone  String
+  heroImage      String
+  craftImage     String
+  homeAbout      Json // string[]
+  updatedAt      DateTime @updatedAt
+}
+
+model TrustStat {
+  id    Int    @id @default(autoincrement())
+  value String
+  label String
+  order Int    @default(0)
+}
+
+model NavItem {
+  id    Int    @id @default(autoincrement())
+  label String
+  href  String
+  order Int    @default(0)
+}
+
+// ============ ÜRÜNLER ============
+model Category {
+  id          Int     @id @default(autoincrement())
+  slug        String  @unique
+  title       String
+  fullTitle   String
+  count       String
+  image       String
+  alt         String
+  tagline     String
+  intro       String  @db.Text
+  useCases    Json // string[]
+  features    Json // {title,text}[]
+  sampleSpecs Json // [string,string][]
+  order       Int     @default(0)
+  models      Model[]
+}
+
+model Model {
+  id         Int      @id @default(autoincrement())
+  name       String
+  slug       String
+  desc       String   @db.Text
+  order      Int      @default(0)
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, slug])
+}
+
+model FeaturedPick {
+  id           Int    @id @default(autoincrement())
+  categorySlug String @unique
+  modelName    String
+  order        Int    @default(0)
+}
+
+// ============ ÜRETİM / HİZMET / BELGE ============
+model CraftPoint {
+  id    Int    @id @default(autoincrement())
+  n     String
+  title String
+  text  String
+  order Int    @default(0)
+}
+
+model Service {
+  id       Int     @id @default(autoincrement())
+  n        String
+  title    String
+  desc     String
+  href     String
+  external Boolean @default(false)
+  image    String
+  order    Int     @default(0)
+}
+
+model Certificate {
+  id    Int    @id @default(autoincrement())
+  name  String
+  org   String
+  desc  String
+  order Int    @default(0)
+}
+
+// ============ KURUMSAL METİNLER ============
+// key: "about" | "ceki-demiri" | "proje-gelistirme"
+model ContentPage {
+  id         Int    @id @default(autoincrement())
+  key        String @unique
+  intro      String @db.Text
+  paragraphs Json // string[]
+  points     Json // {title,text}[]
+  steps      Json // {n,title,text}[]
+  values     Json // {title,text}[]
+  stats      Json // {value,label}[]
+}
+
+// ============ BLOG ============
+model BlogPost {
+  id          Int    @id @default(autoincrement())
+  slug        String @unique
+  title       String
+  excerpt     String @db.Text
+  date        String
+  dateLabel   String
+  readingTime String
+  category    String
+  image       String
+  body        Json // BlogBlock[]
+  order       Int    @default(0)
+}
+
+// ============ KULLANICI / OTP ============
+model AdminUser {
+  id        Int      @id @default(autoincrement())
+  phone     String   @unique
+  name      String
+  role      String   @default("editor") // superadmin | editor
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model OtpCode {
+  id        Int      @id @default(autoincrement())
+  phone     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([phone])
+}

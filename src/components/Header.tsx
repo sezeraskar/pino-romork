@@ -3,10 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { nav } from "@/lib/content";
 import { asset } from "@/lib/asset";
 
-export default function Header() {
+type NavItem = { label: string; href: string };
+
+export default function Header({ nav }: { nav: NavItem[] }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {

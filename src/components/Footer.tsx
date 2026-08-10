@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { categories, site } from "@/lib/content";
 import { asset } from "@/lib/asset";
+import type { Site } from "@/lib/data";
 
 const corporate = [
   { label: "Hakkımızda", href: "/hakkimizda" },
@@ -12,7 +12,13 @@ const corporate = [
   { label: "İletişim", href: "/iletisim" },
 ];
 
-export default function Footer() {
+export default function Footer({
+  site,
+  categories,
+}: {
+  site: Site;
+  categories: { slug: string; title: string }[];
+}) {
   const telPrimary = `tel:${site.phonePrimary.replace(/\s/g, "")}`;
   const telSecondary = `tel:${site.phoneSecondary.replace(/\s/g, "")}`;
 

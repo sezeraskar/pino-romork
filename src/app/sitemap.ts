@@ -1,12 +1,17 @@
 import type { MetadataRoute } from "next";
-import { blogPosts, categories, modelSlug } from "@/lib/content";
+import { modelSlug } from "@/lib/content";
+import { getBlogPosts, getCategories } from "@/lib/data";
 
 const SITE_URL = "https://pinoromork.com";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const [categories, blogPosts] = await Promise.all([
+    getCategories(),
+    getBlogPosts(),
+  ]);
 
   const staticPages = [
     "",
