@@ -1,20 +1,9 @@
 import type { NextConfig } from "next";
 
-// GitHub Pages proje deposu alt yolu (CI'da PAGES_BASE_PATH ile verilir; yerelde boş)
-const basePath = process.env.PAGES_BASE_PATH || "";
-
+// Kendi sunucumuzda (Node) çalışır: SSR + API route'ları + görsel optimizasyonu aktif.
+// PM2 ile `next start` çalıştırılabilir; standalone çıktı deploy'u hafifletir.
 const nextConfig: NextConfig = {
-  output: "export",
-  basePath,
-  trailingSlash: true,
-  // next/image (unoptimized) public görsel src'sine basePath eklemediği için
-  // asset() yardımcısıyla elle prefixliyoruz — bu değeri client'a da açıyoruz.
-  env: {
-    NEXT_PUBLIC_BASE_PATH: basePath,
-  },
-  images: {
-    unoptimized: true,
-  },
+  output: "standalone",
 };
 
 export default nextConfig;

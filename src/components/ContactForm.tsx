@@ -6,21 +6,25 @@ import { ArrowRight } from "./icons";
 
 const WA_PHONE = "905412577792";
 
+type Status = "idle" | "sending" | "ok" | "error";
+
 export default function ContactForm() {
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({
     ad: "",
     telefon: "",
     eposta: "",
     konu: categories[0]?.fullTitle ?? "Genel",
     mesaj: "",
+    website: "", // honeypot
   });
 
   const set = (k: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  function buildMessage() {
+  function waMessage() {
     return (
       `Merhaba, ben ${form.ad || "—"}.\n` +
       `Konu: ${form.konu}\n` +
@@ -30,21 +34,52 @@ export default function ContactForm() {
     );
   }
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    const text = encodeURIComponent(buildMessage());
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setStatus("ok");
+      } else {
+        setStatus("error");
+        setErrorMsg(data?.error || "Gönderilemedi. Lütfen tekrar deneyin.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Bağlantı hatası. Lütfen tekrar deneyin.");
+    }
+  }
+
+  function sendWhatsApp() {
+    const text = encodeURIComponent(waMessage());
     window.open(
       `https://api.whatsapp.com/send?phone=${WA_PHONE}&text=${text}`,
       "_blank",
       "noopener,noreferrer",
     );
-    setSent(true);
   }
 
-  function mailto() {
-    const subject = encodeURIComponent(`Teklif talebi — ${form.konu}`);
-    const body = encodeURIComponent(buildMessage());
-    window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
+  if (status === "ok") {
+    return (
+      <div className="form-success" role="status">
+        <div className="form-success-icon">✓</div>
+        <h3>Talebiniz alındı</h3>
+        <p>
+          En kısa sürede size dönüş yapacağız. Acele bir durum varsa{" "}
+          <a href={`tel:${site.phonePrimary.replace(/\s/g, "")}`}>
+            {site.phonePrimary}
+          </a>{" "}
+          numaramızdan da ulaşabilirsiniz.
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -108,25 +143,36 @@ export default function ContactForm() {
         />
       </label>
 
-      <div className="form-actions">
-        <button type="submit" className="btn">
-          WhatsApp&apos;tan gönder
-          <ArrowRight />
-        </button>
-        <button type="button" className="btn ghost" onClick={mailto}>
-          E-posta ile gönder
-        </button>
-      </div>
+      {/* Honeypot — kullanıcı görmez, botlar doldurur */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        value={form.website}
+        onChange={set("website")}
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1 }}
+        aria-hidden="true"
+      />
 
-      {sent && (
-        <p className="form-note" role="status">
-          WhatsApp penceresi açıldı. Açılmadıysa{" "}
-          <a href={`tel:${site.phonePrimary.replace(/\s/g, "")}`}>
-            {site.phonePrimary}
-          </a>{" "}
-          numaramızdan bize ulaşabilirsiniz.
+      {status === "error" && (
+        <p className="form-error-msg" role="alert">
+          {errorMsg}{" "}
+          <button type="button" className="link-btn" onClick={sendWhatsApp}>
+            WhatsApp&apos;tan gönderin
+          </button>
         </p>
       )}
+
+      <div className="form-actions">
+        <button type="submit" className="btn" disabled={status === "sending"}>
+          {status === "sending" ? "Gönderiliyor…" : "Gönder"}
+          {status !== "sending" && <ArrowRight />}
+        </button>
+        <button type="button" className="btn ghost" onClick={sendWhatsApp}>
+          WhatsApp&apos;tan gönder
+        </button>
+      </div>
     </form>
   );
 }

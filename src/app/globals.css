@@ -1607,3 +1607,42 @@ h1, h2, h3, h4 {
   .browse-select-wrap { display: block; }
   .browse-main .product-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* ---- İletişim formu: gönderim durumları ---- */
+.form-actions .btn:disabled { opacity: 0.6; cursor: default; }
+.form-error-msg {
+  font-size: 13.5px;
+  color: #ffb4a8;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 120, 100, 0.4);
+  border-left: 2px solid #ff7864;
+  border-radius: 3px;
+  background: rgba(255, 120, 100, 0.08);
+}
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+.form-success {
+  text-align: center;
+  padding: 20px 10px;
+}
+.form-success-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #101110;
+  font-size: 28px;
+  display: grid;
+  place-items: center;
+}
+.form-success h3 { font-size: 1.6rem; font-weight: 400; margin-bottom: 12px; }
+.form-success p { color: var(--ink-soft); font-size: 14.5px; max-width: 40ch; margin: 0 auto; }
+.form-success a { color: var(--accent); }
