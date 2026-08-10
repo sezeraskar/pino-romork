@@ -35,11 +35,11 @@ export async function verifyToken(token: string): Promise<Session | null> {
   }
 }
 
-export async function setSessionCookie(token: string) {
+export async function setSessionCookie(token: string, secure = false) {
   const jar = await cookies();
   jar.set(COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure,
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,

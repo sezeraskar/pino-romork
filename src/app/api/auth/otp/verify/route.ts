@@ -22,6 +22,7 @@ export async function POST(req: Request) {
   }
 
   const token = await createSession({ phone: user.phone, name: user.name, role: user.role });
-  await setSessionCookie(token);
+  const secure = req.headers.get("x-forwarded-proto") === "https";
+  await setSessionCookie(token, secure);
   return NextResponse.json({ ok: true });
 }
