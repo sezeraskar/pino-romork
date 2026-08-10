@@ -4,6 +4,8 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import BottomNav from "@/components/BottomNav";
 import { getSite, getNav, getCategories } from "@/lib/data";
 
+export const dynamic = "force-dynamic";
+
 export default async function SiteLayout({
   children,
 }: {
