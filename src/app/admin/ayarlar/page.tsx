@@ -14,7 +14,7 @@ const fields: FieldDef[] = [
   { key: "address", label: "Adres", type: "textarea", full: true },
   { key: "heroImage", label: "Ana görsel (hero)", type: "image", full: true },
   { key: "craftImage", label: "Üretim görseli", type: "image", full: true },
-  { key: "homeAbout", label: "Ana sayfa 'Hakkımızda' paragrafları", type: "stringlist", full: true },
+  { key: "homeAbout", label: "Ana sayfa 'Hakkımızda' paragrafları", type: "stringlist", full: true, multiline: true },
 ];
 
 export default async function AyarlarPage() {

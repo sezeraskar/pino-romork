@@ -22,6 +22,7 @@ export type FieldDef = {
   options?: string[];
   itemFields?: FieldDef[];
   full?: boolean;
+  multiline?: boolean;
 };
 
 type Val = Record<string, unknown>;
@@ -94,7 +95,11 @@ function FieldView({
         <span>{def.label}</span>
         {list.map((s, i) => (
           <div className="ad-row" key={i}>
-            <input type="text" value={s} onChange={(e) => { const n = [...list]; n[i] = e.target.value; onChange(n); }} />
+            {def.multiline ? (
+              <textarea rows={3} value={s} onChange={(e) => { const n = [...list]; n[i] = e.target.value; onChange(n); }} />
+            ) : (
+              <input type="text" value={s} onChange={(e) => { const n = [...list]; n[i] = e.target.value; onChange(n); }} />
+            )}
             <button type="button" className="ad-del" onClick={() => onChange(list.filter((_, j) => j !== i))}>×</button>
           </div>
         ))}
@@ -137,7 +142,7 @@ function FieldView({
                 <button type="button" className="ad-del" onClick={() => onChange(list.filter((_, j) => j !== i))}>×</button>
               </div>
               {type === "ul" ? (
-                <FieldView def={{ key: "items", label: "Maddeler", type: "stringlist" }} value={b.items ?? []} onChange={(v) => upd(i, { items: v })} />
+                <FieldView def={{ key: "items", label: "Maddeler", type: "stringlist", multiline: true }} value={b.items ?? []} onChange={(v) => upd(i, { items: v })} />
               ) : (
                 <textarea rows={type === "h2" ? 1 : 3} value={String(b.text ?? "")} onChange={(e) => upd(i, { text: e.target.value })} />
               )}

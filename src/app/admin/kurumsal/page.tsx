@@ -26,7 +26,7 @@ export default async function KurumsalPage() {
         mode="object"
         fields={[
           { key: "intro", label: "Giriş metni", type: "textarea", full: true },
-          { key: "paragraphs", label: "Paragraflar", type: "stringlist", full: true },
+          { key: "paragraphs", label: "Paragraflar", type: "stringlist", full: true, multiline: true },
           { key: "values", label: "Değerler", type: "repeater", full: true, itemFields: [titleText, bodyText] },
           { key: "stats", label: "İstatistikler", type: "repeater", full: true, itemFields: [
             { key: "value", label: "Değer", type: "text" },

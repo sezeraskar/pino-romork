@@ -1798,3 +1798,8 @@ h1, h2, h3, h4 {
   .ad-content { padding: 22px 18px 60px; }
   .ad-grid { grid-template-columns: 1fr; }
 }
+
+/* çok satırlı liste öğesi (stringlist multiline) */
+.ad-row textarea { flex: 1; min-height: 72px; resize: vertical; }
+.ad-row { align-items: flex-start; }
+.ad-row .ad-del { align-self: stretch; }
