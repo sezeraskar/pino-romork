@@ -197,36 +197,56 @@ export async function saveSection(section: string, data: unknown): Promise<void>
     }
 
     case "category": {
-      // tek kategori güncelle (models dahil)
+      // tek kategori güncelle — ürünlere (Model) DOKUNMAZ (onlar Ürünler bölümünden yönetilir)
       const d = data as Any;
       const slug = str(d.slug);
       const cat = await prisma.category.findUnique({ where: { slug } });
       if (!cat) throw new Error("Kategori bulunamadı");
+      await prisma.category.update({
+        where: { id: cat.id },
+        data: {
+          title: str(d.title),
+          fullTitle: str(d.fullTitle),
+          count: str(d.count),
+          image: str(d.image),
+          alt: str(d.alt),
+          tagline: str(d.tagline),
+          intro: str(d.intro),
+          useCases: J(arr(d.useCases).map(String)),
+          features: J(arr(d.features)),
+          sampleSpecs: J(arr(d.sampleSpecs)),
+        },
+      });
+      return;
+    }
+
+    case "products": {
+      // Tüm ürünler (Model tablosu) — kategoriye göre yeniden kurulur
+      const rows = arr(data);
+      const cats = await prisma.category.findMany({ select: { id: true, slug: true } });
+      const idBySlug = new Map(cats.map((c) => [c.slug, c.id]));
+      const orderBy: Record<string, number> = {};
+      const slugSeen: Record<string, Set<string>> = {};
+      const toCreate = rows
+        .map((r) => {
+          const cslug = str(r.categorySlug);
+          const categoryId = idBySlug.get(cslug);
+          const name = str(r.name).trim();
+          if (!categoryId || !name) return null;
+          // kategori içinde benzersiz slug
+          let slug = modelSlug(name);
+          slugSeen[cslug] = slugSeen[cslug] || new Set();
+          let base = slug, k = 2;
+          while (slugSeen[cslug].has(slug)) slug = `${base}-${k++}`;
+          slugSeen[cslug].add(slug);
+          const order = (orderBy[cslug] = (orderBy[cslug] ?? 0));
+          orderBy[cslug] = order + 1;
+          return { categoryId, name, slug, desc: str(r.desc), order };
+        })
+        .filter((x): x is NonNullable<typeof x> => x != null);
       await prisma.$transaction([
-        prisma.model.deleteMany({ where: { categoryId: cat.id } }),
-        prisma.category.update({
-          where: { id: cat.id },
-          data: {
-            title: str(d.title),
-            fullTitle: str(d.fullTitle),
-            count: str(d.count),
-            image: str(d.image),
-            alt: str(d.alt),
-            tagline: str(d.tagline),
-            intro: str(d.intro),
-            useCases: J(arr(d.useCases).map(String)),
-            features: J(arr(d.features)),
-            sampleSpecs: J(arr(d.sampleSpecs)),
-            models: {
-              create: arr(d.models).map((m, i) => ({
-                name: str(m.name),
-                slug: modelSlug(str(m.name)),
-                desc: str(m.desc),
-                order: i,
-              })),
-            },
-          },
-        }),
+        prisma.model.deleteMany(),
+        prisma.model.createMany({ data: toCreate }),
       ]);
       return;
     }

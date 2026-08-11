@@ -19,10 +19,6 @@ const fields: FieldDef[] = [
     { key: "text", label: "Açıklama", type: "textarea", full: true },
   ] },
   { key: "sampleSpecs", label: "Örnek teknik tablo", type: "kvlist", full: true },
-  { key: "models", label: "Modeller", type: "repeater", full: true, itemFields: [
-    { key: "name", label: "Model adı", type: "text" },
-    { key: "desc", label: "Açıklama", type: "textarea", full: true },
-  ] },
 ];
 
 export default async function KategoriDuzenle({
@@ -31,10 +27,7 @@ export default async function KategoriDuzenle({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const c = await prisma.category.findUnique({
-    where: { slug },
-    include: { models: { orderBy: { order: "asc" } } },
-  });
+  const c = await prisma.category.findUnique({ where: { slug } });
   if (!c) notFound();
 
   const initial = {
@@ -49,12 +42,12 @@ export default async function KategoriDuzenle({
     useCases: c.useCases as string[],
     features: c.features as unknown[],
     sampleSpecs: c.sampleSpecs as unknown[],
-    models: c.models.map((m) => ({ name: m.name, desc: m.desc })),
   };
 
   return (
     <div className="ad-stack">
       <Link href="/admin/kategoriler" className="ad-back">← Kategoriler</Link>
+      <p className="ad-hint">Bu kategoriye ait ürünler <b>Ürünler</b> bölümünden yönetilir.</p>
       <AdminEditor
         section="category"
         title={`Kategori: ${c.fullTitle}  (/${c.slug})`}

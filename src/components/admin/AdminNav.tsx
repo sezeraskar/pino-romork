@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 const links = [
   { href: "/admin", label: "Panel", exact: true },
   { href: "/admin/ayarlar", label: "Site Ayarları" },
-  { href: "/admin/kategoriler", label: "Ürünler & Kategoriler" },
+  { href: "/admin/kategoriler", label: "Kategoriler" },
+  { href: "/admin/urunler", label: "Ürünler" },
   { href: "/admin/one-cikan", label: "Öne Çıkan Modeller" },
   { href: "/admin/uretim", label: "Üretim Maddeleri" },
   { href: "/admin/guven", label: "Güven Rozetleri" },

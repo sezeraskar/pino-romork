@@ -17,7 +17,7 @@ export default async function AdminDashboard() {
 
   const cards = [
     { label: "Kategori", value: cats, href: "/admin/kategoriler" },
-    { label: "Model", value: models, href: "/admin/kategoriler" },
+    { label: "Ürün", value: models, href: "/admin/urunler" },
     { label: "Hizmet", value: services, href: "/admin/hizmetler" },
     { label: "Belge", value: certs, href: "/admin/belgeler" },
     { label: "Blog Yazısı", value: posts, href: "/admin/blog" },

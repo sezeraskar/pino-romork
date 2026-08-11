@@ -163,9 +163,9 @@ export default async function KategoriPage({
       <section className="section">
         <div className="wrap">
           <div className="head">
-            <Reveal as="h2">{cat.fullTitle} Modelleri</Reveal>
+            <Reveal as="h2">{cat.fullTitle} Ürünleri</Reveal>
             <Reveal as="p" className="head-r">
-              {cat.count} · Her model, taşıyacağı yüke göre ölçülendirilir ve
+              {cat.count} · Her ürün, taşıyacağı yüke göre ölçülendirilir ve
               siparişe özel donatılır.
             </Reveal>
           </div>
