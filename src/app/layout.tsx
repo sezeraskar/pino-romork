@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { getSite } from "@/lib/data";
@@ -41,7 +41,10 @@ export const metadata: Metadata = {
     "İstanbul römork",
   ],
   authors: [{ name: "Pino Römork" }],
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { "tr-TR": "/" },
+  },
   openGraph: {
     type: "website",
     locale: "tr_TR",
@@ -52,14 +55,31 @@ export const metadata: Metadata = {
       "Yüke özel mühendislikle üretilmiş römork ve karavanlar. Yerli üretim, uluslararası kalite standartları.",
     images: [
       {
-        url: "/images/agir-yuk-tasima-romorkleri.jpg",
-        width: 385,
-        height: 683,
-        alt: "Pino Römork ağır yük taşıma römorku",
+        url: "/images/hero.jpg",
+        width: 1920,
+        height: 1080,
+        alt: "Pino Römork — mobil ekonomik römork ve karavan çözümleri",
       },
     ],
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pino Römork — Mobil Ekonomik Çözümler",
+    description:
+      "Yüke özel mühendislikle üretilmiş römork ve karavanlar. Yerli üretim, uluslararası kalite standartları.",
+    images: ["/images/hero.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#101110",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
