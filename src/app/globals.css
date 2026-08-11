@@ -1658,15 +1658,9 @@ h1, h2, h3, h4 {
   background: var(--bg-2);
   padding: 40px 34px;
 }
-.admin-login-brand {
-  font-family: var(--font-display), serif;
-  font-weight: 600;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  margin-bottom: 24px;
-}
-.admin-login-brand b { color: var(--accent); }
-.admin-login-brand span { color: var(--muted); font-size: 13px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; }
+.admin-login-brand { margin-bottom: 26px; }
+.admin-login-brand img { height: 52px; width: auto; display: block; margin-bottom: 10px; }
+.admin-login-brand span { color: var(--muted); font-size: 12px; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase; }
 .admin-login-desc { color: var(--ink-soft); font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
 .admin-login-desc code { background: var(--bg-3); padding: 2px 8px; border-radius: 3px; color: var(--accent); }
 
@@ -1681,9 +1675,9 @@ h1, h2, h3, h4 {
   top: 0;
   height: 100vh;
 }
-.ad-brand { font-family: var(--font-display), serif; font-weight: 600; font-size: 19px; padding: 0 10px 22px; }
-.ad-brand b { color: var(--accent); }
-.ad-brand span { display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+.ad-brand { padding: 0 10px 22px; }
+.ad-brand img { height: 46px; width: auto; display: block; }
+.ad-brand span { display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 9px; }
 .ad-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; overflow-y: auto; }
 .ad-nav a { padding: 10px 12px; border-radius: 6px; font-size: 14px; color: var(--ink-soft); transition: 0.2s; }
 .ad-nav a:hover { background: rgba(255,255,255,0.04); color: var(--ink); }
@@ -1765,8 +1759,8 @@ h1, h2, h3, h4 {
 /* Mobil üst bar + çekmece — masaüstünde gizli */
 .ad-topbar { display: none; }
 .ad-sb-overlay { display: none; }
-.ad-brand-mini { font-family: var(--font-display), serif; font-weight: 600; font-size: 17px; }
-.ad-brand-mini b { color: var(--accent); }
+.ad-brand-mini { display: inline-flex; }
+.ad-brand-mini img { height: 32px; width: auto; display: block; }
 .ad-burger {
   display: inline-flex; flex-direction: column; gap: 5px;
   background: none; border: none; cursor: pointer; padding: 8px;

@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { asset } from "@/lib/asset";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -67,7 +69,8 @@ export default function AdminLogin() {
     <div className="admin-login">
       <div className="admin-login-card">
         <div className="admin-login-brand">
-          PINO<b>.</b>RÖMORK <span>Yönetim</span>
+          <Image src={asset("/images/logo.png")} alt="Pino Römork" width={286} height={107} />
+          <span>Yönetim Paneli</span>
         </div>
 
         {step === "phone" ? (

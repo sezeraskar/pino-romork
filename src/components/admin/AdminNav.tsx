@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { asset } from "@/lib/asset";
 
 const links = [
   { href: "/admin", label: "Panel", exact: true },
@@ -38,7 +40,9 @@ export default function AdminNav({ name }: { name: string }) {
     <>
       {/* Mobil üst bar (sadece dar ekranda) */}
       <div className="ad-topbar">
-        <span className="ad-brand-mini">PINO<b>.</b>RÖMORK</span>
+        <span className="ad-brand-mini">
+          <Image src={asset("/images/logo.png")} alt="Pino Römork" width={286} height={107} />
+        </span>
         <button className="ad-burger" onClick={() => setOpen(true)} aria-label="Menüyü aç">
           <span /><span /><span />
         </button>
@@ -51,7 +55,10 @@ export default function AdminNav({ name }: { name: string }) {
       />
 
       <aside className={`ad-sidebar ${open ? "open" : ""}`}>
-        <div className="ad-brand">PINO<b>.</b>RÖMORK <span>Yönetim</span></div>
+        <div className="ad-brand">
+          <Image src={asset("/images/logo.png")} alt="Pino Römork" width={286} height={107} />
+          <span>Yönetim Paneli</span>
+        </div>
         <nav className="ad-nav">
           {links.map((l) => {
             const active = l.exact ? pathname === l.href : pathname.startsWith(l.href);
