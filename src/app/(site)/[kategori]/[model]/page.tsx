@@ -194,24 +194,34 @@ export default async function ModelPage({
                 Aynı kategorideki diğer modeller.
               </Reveal>
             </div>
-            <div className="model-grid">
+            <div className="product-grid">
               {related.map((rm, i) => (
                 <Reveal
                   as="a"
-                  className="model-card"
+                  className="product-card"
                   key={rm.name}
                   delay={i * 40}
                   href={`/${cat.slug}/${modelSlug(rm.name)}`}
                   aria-label={rm.name}
                 >
-                  <div className="model-card-top">
+                  <div className="product-thumb">
+                    <Image
+                      src={cat.image}
+                      alt={rm.name}
+                      fill
+                      sizes="(max-width:760px) 50vw, (max-width:1024px) 33vw, 25vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                    <span className="product-cat">{cat.title}</span>
+                  </div>
+                  <div className="product-info">
                     <h3>{rm.name}</h3>
                     <p>{rm.desc}</p>
+                    <span className="product-link">
+                      İncele
+                      <ArrowUpRight />
+                    </span>
                   </div>
-                  <span className="model-cta">
-                    İncele
-                    <ArrowUpRight />
-                  </span>
                 </Reveal>
               ))}
             </div>

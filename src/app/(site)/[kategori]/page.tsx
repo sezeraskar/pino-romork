@@ -169,25 +169,34 @@ export default async function KategoriPage({
               siparişe özel donatılır.
             </Reveal>
           </div>
-          <div className="model-grid">
+          <div className="product-grid">
             {cat.models.map((m, i) => (
               <Reveal
                 as="a"
-                className="model-card"
+                className="product-card"
                 key={m.name}
                 delay={i * 40}
                 href={`/${cat.slug}/${modelSlug(m.name)}`}
                 aria-label={m.name}
               >
-                <div className="model-card-top">
-                  <span className="model-n">M{String(i + 1).padStart(2, "0")}</span>
+                <div className="product-thumb">
+                  <Image
+                    src={cat.image}
+                    alt={m.name}
+                    fill
+                    sizes="(max-width:760px) 50vw, (max-width:1024px) 33vw, 25vw"
+                    style={{ objectFit: "cover" }}
+                  />
+                  <span className="product-cat">{cat.title}</span>
+                </div>
+                <div className="product-info">
                   <h3>{m.name}</h3>
                   <p>{m.desc}</p>
+                  <span className="product-link">
+                    İncele
+                    <ArrowUpRight />
+                  </span>
                 </div>
-                <span className="model-cta">
-                  İncele
-                  <ArrowUpRight />
-                </span>
               </Reveal>
             ))}
           </div>
