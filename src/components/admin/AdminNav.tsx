@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const links = [
   { href: "/admin", label: "Panel", exact: true },
@@ -21,6 +22,10 @@ const links = [
 export default function AdminNav({ name }: { name: string }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  // rota değişince menüyü kapat
+  useEffect(() => setOpen(false), [pathname]);
 
   async function logout() {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -29,22 +34,38 @@ export default function AdminNav({ name }: { name: string }) {
   }
 
   return (
-    <aside className="ad-sidebar">
-      <div className="ad-brand">PINO<b>.</b>RÖMORK <span>Yönetim</span></div>
-      <nav className="ad-nav">
-        {links.map((l) => {
-          const active = l.exact ? pathname === l.href : pathname.startsWith(l.href);
-          return (
-            <Link key={l.href} href={l.href} className={active ? "active" : ""}>
-              {l.label}
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="ad-user">
-        <span>{name}</span>
-        <button onClick={logout}>Çıkış</button>
+    <>
+      {/* Mobil üst bar (sadece dar ekranda) */}
+      <div className="ad-topbar">
+        <span className="ad-brand-mini">PINO<b>.</b>RÖMORK</span>
+        <button className="ad-burger" onClick={() => setOpen(true)} aria-label="Menüyü aç">
+          <span /><span /><span />
+        </button>
       </div>
-    </aside>
+
+      <div
+        className={`ad-sb-overlay ${open ? "show" : ""}`}
+        onClick={() => setOpen(false)}
+        aria-hidden="true"
+      />
+
+      <aside className={`ad-sidebar ${open ? "open" : ""}`}>
+        <div className="ad-brand">PINO<b>.</b>RÖMORK <span>Yönetim</span></div>
+        <nav className="ad-nav">
+          {links.map((l) => {
+            const active = l.exact ? pathname === l.href : pathname.startsWith(l.href);
+            return (
+              <Link key={l.href} href={l.href} className={active ? "active" : ""} onClick={() => setOpen(false)}>
+                {l.label}
+              </Link>
+            );
+          })}
+        </nav>
+        <div className="ad-user">
+          <span>{name}</span>
+          <button onClick={logout}>Çıkış</button>
+        </div>
+      </aside>
+    </>
   );
 }
